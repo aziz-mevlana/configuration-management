@@ -20,6 +20,7 @@ Uygulama, bulut sunucusu üzerinde **Node.js v22 (LTS)** ortamında dinamik olar
 
 Ansible rolleri modern en iyi pratiklere (Best Practices) uygun olarak modüler bir yapıda tasarlanmıştır:
 
+```text
 .
 ├── inventory.ini               # Sunucu IP ve SSH bilgilerinin yer aldığı envanter
 ├── setup.yml                   # Ana Playbook (Rolleri tetikleyen orkestratör)
@@ -28,10 +29,8 @@ Ansible rolleri modern en iyi pratiklere (Best Practices) uygun olarak modüler 
     ├── nginx/                  # Nginx kurulumu ve servis yönetimi
     ├── app/                    # Node.js v22 kurulumu, Git clone, NPM build ve deployment
     └── ssh/                    # Güvenli SSH anahtarlarının yapılandırılması
-
----
-
-##️ Kurulum ve Canlıya Alma (Deployment)
+```
+## Kurulum ve Canlıya Alma (Deployment)
 
 ### 1. Ön Gereksinimler
 Yerel makinenizde (Mac/Linux) Ansible'ın kurulu olduğundan ve hedef bulut sunucusuna SSH erişiminizin bulunduğundan emin olun.
