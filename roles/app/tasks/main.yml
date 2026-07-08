@@ -1,0 +1,40 @@
+---
+- name: Add NodeSource official Node.js 22.x repository setup script
+  shell: curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+
+- name: Install official Node.js v22 from NodeSource
+  apt:
+    name: nodejs
+    state: present
+
+- name: Clone static web application repository from GitHub
+  git:
+    repo: 'https://github.com/aziz-mevlana/pomodoro-app.git'
+    dest: /tmp/pomodoro-src
+    force: yes
+
+- name: Install project dependencies (npm install)
+  npm:
+    path: /tmp/pomodoro-src
+
+- name: Build the production artifacts (npm run build)
+  command: npm run build
+  args:
+    chdir: /tmp/pomodoro-src
+
+- name: Clear old files from Nginx web root
+  file:
+    path: /var/www/html/
+    state: absent
+
+- name: Ensure Nginx web root directory exists
+  file:
+    path: /var/www/html/
+    state: directory
+    mode: '0755'
+
+- name: Deploy built production files (dist) to Nginx web root
+  copy:
+    src: /tmp/pomodoro-src/dist/
+    dest: /var/www/html/
+    remote_src: yes

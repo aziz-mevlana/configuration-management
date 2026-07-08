@@ -1,0 +1,6 @@
+---
+- name: Ensure public key is authorized for SSH access
+  authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: "{{ lookup('file', '~/.ssh/key_devops.pub') }}"

@@ -1,0 +1,10 @@
+---
+- name: Cloud Server Infrastructure Configuration
+  hosts: webservers
+  become: yes  # Komutları sudo yetkisiyle çalıştırır
+  
+  roles:
+    - { role: base, tags: ['base', 'system'] }
+    - { role: nginx, tags: ['nginx', 'web'] }
+    - { role: app, tags: ['app', 'deploy'] }
+    - { role: ssh, tags: ['ssh', 'security'] }
