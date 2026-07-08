@@ -65,3 +65,4 @@ Ansible app rolü arka planda şu kritik DevOps süreçlerini yönetir:
 ## Geliştirici
 
 - **Aziz Mevlana Alim** - [GitHub](https://github.com/aziz-mevlana)
+- https://roadmap.sh/projects/configuration-management
