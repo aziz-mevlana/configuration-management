@@ -1,40 +1,23 @@
 ---
-- name: Add NodeSource official Node.js 22.x repository setup script
-  shell: curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+- name: Node.js uygulaması için PM2'yi global olarak kur
+  npm:
+    name: pm2
+    global: yes
 
-- name: Install official Node.js v22 from NodeSource
-  apt:
-    name: nodejs
-    state: present
-
-- name: Clone static web application repository from GitHub
+- name: GitHub'dan uygulama kodlarını çek
   git:
-    repo: 'https://github.com/aziz-mevlana/pomodoro-app.git'
-    dest: /tmp/pomodoro-src
+    repo: 'https://github.com/aziz-mevlana/hello-world-node.git'
+    dest: /var/www/hello-world
+    version: main
     force: yes
 
-- name: Install project dependencies (npm install)
+- name: NPM bağımlılıklarını yükle
   npm:
-    path: /tmp/pomodoro-src
+    path: /var/www/hello-world
 
-- name: Build the production artifacts (npm run build)
-  command: npm run build
+- name: Uygulamayi PM2 listesinden sil ve sifirdan baslat
+  shell: |
+    pm2 delete hello-world || true
+    pm2 start server.js --name "hello-world"
   args:
-    chdir: /tmp/pomodoro-src
-
-- name: Clear old files from Nginx web root
-  file:
-    path: /var/www/html/
-    state: absent
-
-- name: Ensure Nginx web root directory exists
-  file:
-    path: /var/www/html/
-    state: directory
-    mode: '0755'
-
-- name: Deploy built production files (dist) to Nginx web root
-  copy:
-    src: /tmp/pomodoro-src/dist/
-    dest: /var/www/html/
-    remote_src: yes
+    chdir: /var/www/hello-world

@@ -1,11 +1,28 @@
 ---
-- name: Install Nginx web server
+- name: Nginx paketini kur
   apt:
     name: nginx
     state: present
+    update_cache: yes
 
-- name: Ensure Nginx is started and enabled on boot
+- name: Nginx reverse proxy ayar dosyasini gonder
+  template:
+    src: hello-world.conf.j2
+    dest: /etc/nginx/sites-available/hello-world.conf
+
+- name: Sitede aktif etmek icin symlink olustur
+  file:
+    src: /etc/nginx/sites-available/hello-world.conf
+    dest: /etc/nginx/sites-enabled/hello-world.conf
+    state: link
+
+- name: Varsayilan Nginx default sayfasini kaldir (Cakismayi onlemek icin)
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Nginx servisini baslat ve baslangica ekle
   service:
     name: nginx
-    state: started
+    state: restarted
     enabled: yes
